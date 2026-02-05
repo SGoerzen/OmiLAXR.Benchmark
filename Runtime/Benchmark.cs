@@ -258,10 +258,10 @@ namespace OmiLAXR.Benchmark
         /// <summary>Per-frame update for sampling and periodic logging.</summary>
         private void Update()
         {
-            if (enableHotkeys && Input.GetKeyDown(dumpKey))
+            /*if (enableHotkeys && Input.GetKeyDown(dumpKey))
             {
                 DumpAll();
-            }
+            }*/
 
             
             var t = Time.realtimeSinceStartupAsDouble - _t0MeasurementStartRealtime;
