@@ -30,6 +30,18 @@
     "email": "goerzen@cs.rwth-aachen.de",
     "url": "https://elearn.rwth-aachen.de/goerzen"
   },
+  "samples": [
+    {
+      "displayName": "Python Plot Script",
+      "description": "An example plot script to visualize the benchmark results with Python and Matplotlib. Move it to your Python environment.",
+      "path": "Samples~/plot.py"
+    },
+    {
+      "displayName": "Python Plot Run Script",
+      "description": "An example how to run the Python Plot Script with parameters.",
+      "path": "Samples~/do_plot.sh"
+    }
+  ],
   "publishConfig": {
     "access": "public"  
   }
