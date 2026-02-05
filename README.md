@@ -1,93 +1,124 @@
 # OmiLAXR.Benchmark
 
+Unity package for running reproducible performance benchmarks in the OmiLAXR ecosystem. It provides a benchmark runner, a stress scenario, and CSV/log outputs you can compare across tracking configurations and builds.
 
+**Highlights**
+- Warmup + measurement workflow with automatic start/stop.
+- Frame time, FPS, memory, and GC allocation sampling.
+- CSV aggregation for plotting and comparison.
+- Stress scenario to generate deterministic load.
+- Optional synthetic event generation with custom metrics.
 
-## Getting started
+Just drag and drop the prefab `Resources/Prefabs/Benchmark.prefab` into your scene (or use one of the sample scenes).
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+## Compatibility
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+OmiLAXRv2 is modular and works with common XR stacks (MRTK, VRTK, SteamVR, UnityXR, etc.) and a broad range of hardware.
 
-## Add your files
+The only hard requirement is the Unity version. This package targets Unity `2020.3` and is tested with `2020.3.15f1` (see `package.json`). If you run a different version, feedback and contributions are welcome.
 
-* [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-* [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+## Dependencies
 
+- `com.rwth.unity.omilaxr` `2.2.0`
+
+## Install
+
+### Install Using Git URL
+
+1. Go to **Window** -> **Package Manager**.
+2. Click the `+` button.
+3. Select **Add package from git URL**.
+4. Paste `https://github.com/SGoerzen/OmiLAXR.Benchmark.git` and confirm.
+
+### Install via `manifest.json`
+
+Add this to `Packages/manifest.json`:
+
+```json
+{
+  "dependencies": {
+    "com.rwth.unity.omilaxr.benchmark": "1.0.0"
+  }
+}
 ```
-cd existing_repo
-git remote add origin https://gitlab.com/learntech-rwth/omilaxr-ecosystem/v2/omilaxr.benchmark.git
-git branch -M main
-git push -uf origin main
+
+## Quick Start
+
+1. Open a sample scene:
+- With OmiLAXR tracking: `Resources/Scenes/BenchmarkScene_WithOmiLAXR.unity`
+- Baseline (no OmiLAXR): `Resources/Scenes/BenchmarkScene_WithoutOmiLAXR.unity`
+2. Press Play. Warmup runs first, then measurement starts automatically.
+3. On completion, the console prints absolute paths to the log and CSV outputs.
+
+## Benchmark Runner
+
+Add the `Benchmark` component (included in `Resources/Prefabs/Benchmark.prefab`) and adjust the main settings:
+
+- `warmupSeconds`: warmup duration before measurement starts.
+- `autoStartOnEnable`: start automatically on enable.
+- `autoQuitAfterSeconds`: auto end measurement after N seconds (0 = disabled).
+- `frameSpikeThresholdMs`: count spikes above this threshold (ms).
+- `csvIntervalSeconds`: time-based bin size for CSV output.
+
+Custom metrics:
+```csharp
+OmiLAXR.Benchmark.Benchmark.StartRecord("MyMetric");
+// ... work ...
+OmiLAXR.Benchmark.Benchmark.StopRecord("MyMetric");
 ```
 
-## Integrate with your tools
+## Stress Scenario
 
-* [Set up project integrations](https://gitlab.com/learntech-rwth/omilaxr-ecosystem/v2/omilaxr.benchmark/-/settings/integrations)
+The `StressScenario` component spawns objects and applies deterministic motion to generate load. It also supports optional synthetic events:
 
-## Collaborate with your team
+- `syntheticEventsPerSecond`
+- `allocateBytesPerEvent`
+- `onSyntheticEvent` UnityEvent hook
 
-* [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-* [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-* [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-* [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-* [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+You can use the prefab `Resources/Prefabs/StressScenario.prefab` as a starting point.
 
-## Test and Deploy
+## Output Files
 
-Use the built-in continuous integration in GitLab.
+Files are written under `Application.persistentDataPath/benchmarks` by default:
 
-* [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-* [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-* [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-* [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-* [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+- `benchmark_YYYYMMDD_HHMMSS_<Reason>.log`
+- `benchmark_YYYYMMDD_HHMMSS_<Reason>.csv`
 
-***
+The absolute path is logged when files are created.
 
-# Editing this README
+## CSV Format
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+The default binned CSV header is:
+```
+t_s,phase,frame_ms,fps,used_mem_mb,frame_ms_p95,frame_ms_max,spike_ratio,frames_in_bin,gc_alloc_bytes_mean,gc_alloc_bytes_max
+```
 
-## Suggestions for a good README
+Notes:
+- `phase` is `warmup` or `measure`.
+- If `csvIntervalSeconds <= 0`, per-frame rows are written instead of binned rows.
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+## Plotting (Sample Scripts)
 
-## Name
-Choose a self-explaining name for your project.
+Sample plotting helpers live in `Samples~`:
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+- `Samples~/plot.py`
+- `Samples~/do_plot.sh`
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+Example:
+```bash
+python plot.py --csv /path/to/benchmark.csv --label Run1 --p95 --max
+```
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+## For Developers
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+To work with this package, place it outside your Unity project (if it has its own git repo) or at the project root. Then include the package via **Window** -> **Package Manager** -> `+` -> **Add package from disk**, and select this project's `package.json`.
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+For production use, prefer **Add package from git URL** (above).
 
 ## License
-For open source projects, say how it is licensed.
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+AGPL-3.0-or-later. See `LICENSE`.
+
+## Changelog
+
+See `CHANGELOG.md`.
