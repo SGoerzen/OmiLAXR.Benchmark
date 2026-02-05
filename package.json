@@ -1,0 +1,36 @@
+{
+  "name": "com.rwth.unity.omilaxr.benchmark",
+  "version": "1.0.0",
+  "displayName": "OmiLAXR.Benchmark",
+  "description": "This is a package for the OmiLAXR ecosystem to run a benchmark with your tracking configuration.",
+  "unity": "2020.3",
+  "unityRelease": "15f1",
+  "documentationUrl": "https://omilaxr.dev/",
+  "changelogUrl": "https://github.com/SGoerzen/OmiLAXR.Benchmark/blob/main/CHANGELOG.md",
+  "licensesUrl": "https://github.com/SGoerzen/OmiLAXR.Benchmark/blob/main/LICENSE",
+  "homepage": "https://omilaxr.dev/",
+  "license": "AGPL-3.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SGoerzen/OmiLAXR.Benchmark"
+  },
+  "dependencies": {
+    "com.rwth.unity.omilaxr": "2.2.0"
+  },
+  "keywords": [
+    "OmiLAXR",
+    "Learning Analytics",
+    "Virtual Reality",
+    "Augmented Reality",
+    "eXtended Reality",
+    "Benchmark"
+  ],
+  "author": {
+    "name": "Sergej Görzen",
+    "email": "goerzen@cs.rwth-aachen.de",
+    "url": "https://elearn.rwth-aachen.de/goerzen"
+  },
+  "publishConfig": {
+    "access": "public"  
+  }
+}

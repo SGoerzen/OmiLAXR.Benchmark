@@ -1,0 +1,34 @@
+﻿cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata below."
+type: software
+title: "OmiLAXR.Benchmark"
+version: "1.0.0"
+date-released: 2026-02-05
+repository-code: "https://github.com/SGoerzen/OmiLAXR"
+url: "https://omilaxr.dev/"
+license: "AGPL-3.0-or-later"
+authors:
+  - given-names: "Sergej"
+    family-names: "Görzen"
+    orcid: "https://orcid.org/0000-0003-3853-2435"
+    affiliation: "RWTH Aachen University"
+abstract: >
+  OmiLAXR is the base package of a modular Learning Analytics framework for XR.
+  This package provides a benchmark to test your tracking configuration and see how it performs in terms of latency and data quality.
+keywords:
+  - Learning Analytics
+  - XR
+  - Virtual Reality
+  - Augmented Reality
+  - Unity
+  - Benchmark
+preferred-citation:
+  type: software
+  title: "OmiLAXR.Benchmark"
+  version: "1.0.0"
+  date-released: 2026-02-05
+  url: "https://omilaxr.dev/"
+  authors:
+    - given-names: "Sergej"
+      family-names: "Görzen"
+      orcid: "https://orcid.org/0000-0003-3853-2435"

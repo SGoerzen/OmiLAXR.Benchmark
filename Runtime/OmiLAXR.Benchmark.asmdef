@@ -1,0 +1,16 @@
+{
+    "name": "OmiLAXR.Benchmark",
+    "rootNamespace": "OmiLAXR.Benchmark",
+    "references": [
+        "OmiLAXR"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
